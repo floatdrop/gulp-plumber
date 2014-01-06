@@ -25,6 +25,10 @@ module.exports = function (opts) {
     function pipe2(dest, options) {
         var source = this;
 
+        if (dest.opts && dest.opts.continueOnError !== false) {
+            dest.opts.continueOnError = true;
+        }
+
         if (opts.handleErrors !== false) {
             dest.on('error', function (error) {
                 gutil.log(
@@ -32,7 +36,6 @@ module.exports = function (opts) {
                     gutil.colors.red(trim(error.toString())));
             });
         }
-
 
         function ondata(chunk) {
             if (dest.writable) {
