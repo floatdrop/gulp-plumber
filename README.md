@@ -23,7 +23,7 @@ var coffee = require('gulp-coffee');
 gulp.src('./src/*.ext')
 	.pipe(plumber())
 	.pipe(coffee())
-	.pipe(gulp.dest("./dist"));
+	.pipe(gulp.dest('./dist'));
 ```
 
 ## API
