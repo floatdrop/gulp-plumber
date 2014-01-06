@@ -24,7 +24,8 @@
   "devDependencies": {
     "mocha": "~1.14.0",
     "should": "~2.1.0",
-    "gulp-util": "~2.2.0"
+    "gulp-util": "~2.2.0",
+    "event-stream": "~3.0.20"
   },
   "engines": {
     "node": ">=0.10",
