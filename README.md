@@ -32,6 +32,18 @@ gulp.src('./src/*.ext')
 
 Returns Stream, that fixes `pipe` methods on Streams that are next in pipeline.
 
+#### options.inherit
+Type: `Boolean`  
+Default: `true`
+
+Monkeypatch `pipe` functions in underlying streams in pipeline.
+
+#### options.handleErrors
+Type: `Boolean`  
+Default: `true`
+
+Handle errors in underlying streams and output them to console.
+
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)

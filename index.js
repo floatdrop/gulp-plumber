@@ -3,8 +3,12 @@
 var PassThrough = require('stream').PassThrough;
 var EE = require('events').EventEmitter;
 var util = require('util');
+var gutil = require('gulp-util');
 
-module.exports = function () {
+function trim(str) { return str.replace(/^\s+|\s+$/g, ''); }
+
+module.exports = function (opts) {
+    opts = opts || {};
 
     var through = new PassThrough({ objectMode: true });
 
@@ -20,6 +24,15 @@ module.exports = function () {
 
     function pipe2(dest, options) {
         var source = this;
+
+        if (opts.handleErrors !== false) {
+            dest.on('error', function (error) {
+                gutil.log(
+                    gutil.colors.cyan('Plumber') + ' found unhandled error:',
+                    gutil.colors.red(trim(error.toString())));
+            });
+        }
+
 
         function ondata(chunk) {
             if (dest.writable) {
@@ -99,7 +112,9 @@ module.exports = function () {
 
         // Allow for unix-like usage: A.pipe(B).pipe(C)
 
-        dest.pipe = pipe2;
+        if (opts.inherit !== false) {
+            dest.pipe = pipe2;
+        }
 
         return dest;
     }
