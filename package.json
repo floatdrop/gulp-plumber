@@ -1,0 +1,39 @@
+
+{
+  "name": "gulp-plumber",
+  "version": "0.0.0",
+  "description": "A plumber, for gulp pipeline",
+  "keywords": [
+    "gulpplugin"
+  ],
+  "homepage": "https://github.com/floatdrop/gulp-plumber",
+  "bugs": "https://github.com/floatdrop/gulp-plumber/issues",
+  "author": {
+    "name": "Vsevolod Strukchinsky",
+    "email": "floatdrop@gmail.com",
+    "url": "https://github.com/floatdrop"
+  },
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/floatdrop/gulp-plumber.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "~1.14.0",
+    "should": "~2.1.0",
+    "gulp-util": "~2.2.0"
+  },
+  "engines": {
+    "node": ">=0.10",
+    "npm": ">=1.2.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
