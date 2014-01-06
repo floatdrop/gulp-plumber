@@ -20,11 +20,12 @@
   "scripts": {
     "test": "mocha --reporter spec"
   },
-  "dependencies": {},
+  "dependencies": {
+    "gulp-util": "~2.2.0"
+  },
   "devDependencies": {
     "mocha": "~1.14.0",
     "should": "~2.1.0",
-    "gulp-util": "~2.2.0",
     "event-stream": "~3.0.20"
   },
   "engines": {
