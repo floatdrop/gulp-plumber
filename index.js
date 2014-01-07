@@ -31,11 +31,9 @@ module.exports = function (opts) {
 
         if (opts.handleErrors !== false) {
             dest.on('error', function (error) {
-                if (EE.listenerCount(dest, 'error') === 0) {
-                    gutil.log(
-                        gutil.colors.cyan('Plumber') + ' found unhandled error:',
-                        gutil.colors.red(trim(error.toString())));
-                }
+                gutil.log(
+                    gutil.colors.cyan('Plumber') + ' found unhandled error:',
+                    gutil.colors.red(trim(error.toString())));
             });
         }
 
@@ -88,8 +86,8 @@ module.exports = function (opts) {
             }
         }
 
-        source.on('error', onerror);
-        dest.on('error', onerror);
+        // source.on('error', onerror);
+        // dest.on('error', onerror);
 
         // remove all the event listeners that were added.
         function cleanup() {
