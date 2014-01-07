@@ -2,7 +2,6 @@
 
 var PassThrough = require('stream').PassThrough;
 var EE = require('events').EventEmitter;
-var util = require('util');
 var gutil = require('gulp-util');
 
 function trim(str) { return str.replace(/^\s+|\s+$/g, ''); }
@@ -85,12 +84,12 @@ function plumber(opts) {
             if (didOnEnd) { return; }
             didOnEnd = true;
 
-            if (util.isFunction(dest.destroy)) { dest.destroy(); }
+            if (typeof dest.destroy === 'function') { dest.destroy(); }
         }
 
         // don't leave dangling pipes when there are errors.
         function onerror(er) {
-            if (EE.listenerCount(this, 'error') === 0) {
+            if (EE.listenerCount(this, 'error') === 1) {
                 cleanup();
                 throw er; // Unhandled stream error in pipe.
             }
@@ -111,8 +110,8 @@ function plumber(opts) {
             dest.removeListener('error', onerror);
 
             source.removeListener('end', cleanup);
-            source.removeListener('close', cleanup);
 
+            source.removeListener('close', cleanup);
             dest.removeListener('close', cleanup);
         }
 
