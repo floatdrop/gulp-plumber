@@ -18,13 +18,16 @@
     "url": "git://github.com/floatdrop/gulp-plumber.git"
   },
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec"
   },
   "dependencies": {
     "gulp-util": "~2.2.0"
   },
   "devDependencies": {
     "mocha": "~1.14.0",
+    "coveralls": "~2.6.0",
+    "mocha-lcov-reporter": "0.0.1",
+    "istanbul": "~0.1.44",
     "should": "~2.1.0",
     "event-stream": "~3.0.20",
     "gulp-mocha": "~0.2.0",

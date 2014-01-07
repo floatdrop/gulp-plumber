@@ -13,8 +13,12 @@ function defaultHandler(error) {
         gutil.colors.red(trim(error.toString())));
 }
 
-module.exports = function (opts) {
+function plumber(opts) {
     opts = opts || {};
+
+    var errorHandler = (typeof opts.errorHandler === 'function') ?
+        opts.errorHandler :
+        defaultHandler;
 
     var through = new PassThrough({ objectMode: true });
 
@@ -25,8 +29,8 @@ module.exports = function (opts) {
     }
 
     through.on('pipe', function (source) {
-        if (opts.handleErrors !== false) {
-            source.on('error', defaultHandler);
+        if (opts.errorHandler !== false) {
+            source.on('error', errorHandler);
         }
 
         preventDefaultErrorHandler(source);
@@ -39,8 +43,8 @@ module.exports = function (opts) {
             dest.opts.continueOnError = true;
         }
 
-        if (opts.handleErrors !== false) {
-            dest.on('error', defaultHandler);
+        if (opts.errorHandler !== false) {
+            dest.on('error', errorHandler);
         }
 
         function ondata(chunk) {
@@ -92,8 +96,8 @@ module.exports = function (opts) {
             }
         }
 
-        // source.on('error', onerror);
-        // dest.on('error', onerror);
+        source.on('error', onerror);
+        dest.on('error', onerror);
 
         // remove all the event listeners that were added.
         function cleanup() {
@@ -132,4 +136,6 @@ module.exports = function (opts) {
 
     return through;
 
-};
+}
+
+module.exports = plumber;

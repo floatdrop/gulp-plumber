@@ -1,10 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var fs = require('fs'),
-	es = require('event-stream'),
-	should = require('should'),
-    assert = require('assert'),
+var assert = require('assert'),
     EE = require('events').EventEmitter;
 
 delete require.cache[require.resolve('..')];
@@ -12,14 +9,18 @@ delete require.cache[require.resolve('..')];
 var gutil = require('gulp-util'),
 	plumber = require('../');
 
-var testString = 'should be in array';
-
 describe('gulp-plumber', function () {
 
-    describe('options', function() {
-        it('{ handleErrors: `false` } should not add error handlers to stream', function () {
-            var stream = plumber({ handleErrors: false }).pipe(gutil.noop());
-            assert.equal(EE.listenerCount(stream, 'error'), 0);
+    describe('options', function () {
+        it('{ errorHandler: `false` } should not add error handlers to stream', function () {
+            var stream = plumber({ errorHandler: false }).pipe(gutil.noop());
+            assert.equal(EE.listenerCount(stream, 'error'), 1);
+        });
+
+        it('{ errorHandler: function } should accept custom function handler', function (done) {
+            var stream = plumber({ errorHandler: done.bind(null, null) }).pipe(gutil.noop());
+            assert.equal(EE.listenerCount(stream, 'error'), 2);
+            stream.emit('error', new Error('Bang!'));
         });
 
         it('{ inherit: `false` } should disable propagation of pipe2 method', function () {
@@ -43,7 +44,7 @@ describe('gulp-plumber', function () {
 
     it('should remove default error handler from source stream', function (done) {
         var stream = gutil.noop();
-        stream.pipe(plumber({ handleErrors: false })).pipe(gutil.noop());
+        stream.pipe(plumber({ errorHandler: false })).pipe(gutil.noop());
         assert.equal(EE.listenerCount(stream, 'error'), 0);
         done();
     });
