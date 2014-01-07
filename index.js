@@ -7,6 +7,12 @@ var gutil = require('gulp-util');
 
 function trim(str) { return str.replace(/^\s+|\s+$/g, ''); }
 
+function defaultHandler(error) {
+    gutil.log(
+        gutil.colors.cyan('Plumber') + ' found unhandled error:',
+        gutil.colors.red(trim(error.toString())));
+}
+
 module.exports = function (opts) {
     opts = opts || {};
 
@@ -19,6 +25,10 @@ module.exports = function (opts) {
     }
 
     through.on('pipe', function (source) {
+        if (opts.handleErrors !== false) {
+            source.on('error', defaultHandler);
+        }
+
         preventDefaultErrorHandler(source);
     });
 
@@ -30,11 +40,7 @@ module.exports = function (opts) {
         }
 
         if (opts.handleErrors !== false) {
-            dest.on('error', function (error) {
-                gutil.log(
-                    gutil.colors.cyan('Plumber') + ' found unhandled error:',
-                    gutil.colors.red(trim(error.toString())));
-            });
+            dest.on('error', defaultHandler);
         }
 
         function ondata(chunk) {

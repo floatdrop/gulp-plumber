@@ -7,6 +7,7 @@ var fs = require('fs'),
     assert = require('assert'),
     EE = require('events').EventEmitter;
 
+delete require.cache[require.resolve('..')];
 
 var gutil = require('gulp-util'),
 	plumber = require('../');
@@ -27,9 +28,23 @@ describe('gulp-plumber', function () {
         });
     });
 
-    it('should attach error handler by default', function (done) {
+    it('should attach error handler by default source stream', function (done) {
+        var stream = gutil.noop();
+        stream.pipe(plumber()).pipe(gutil.noop());
+        stream.emit('error', new Error('Bang!'));
+        done();
+    });
+
+    it('should attach error handler by default on destanation streams', function (done) {
         var stream = plumber().pipe(gutil.noop());
         stream.emit('error', new Error('Bang!'));
+        done();
+    });
+
+    it('should remove default error handler from source stream', function (done) {
+        var stream = gutil.noop();
+        stream.pipe(plumber({ handleErrors: false })).pipe(gutil.noop());
+        assert.equal(EE.listenerCount(stream, 'error'), 0);
         done();
     });
 
