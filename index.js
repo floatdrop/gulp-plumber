@@ -31,9 +31,11 @@ module.exports = function (opts) {
 
         if (opts.handleErrors !== false) {
             dest.on('error', function (error) {
-                gutil.log(
-                    gutil.colors.cyan('Plumber') + ' found unhandled error:',
-                    gutil.colors.red(trim(error.toString())));
+                if (EE.listenerCount(dest, 'error') === 0) {
+                    gutil.log(
+                        gutil.colors.cyan('Plumber') + ' found unhandled error:',
+                        gutil.colors.red(trim(error.toString())));
+                }
             });
         }
 
