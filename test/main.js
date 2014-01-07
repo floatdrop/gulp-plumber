@@ -39,6 +39,19 @@ describe('gulp-plumber', function () {
         done();
     });
 
+    it('should pause source, if dest write returning false', function (done) {
+        var plumb = plumber();
+        var dest = gutil.noop();
+        plumb.pipe(dest);
+        var _write = dest.write;
+        plumb.pause = done;
+        dest.write = function (chunk, encoding, callback) {
+            _write(chunk, encoding, callback);
+            return false;
+        };
+        plumb.write('data');
+    });
+
     it('should attach error handler by default on destanation streams', function (done) {
         var stream = plumber().pipe(gutil.noop());
         stream.emit('error', new Error(errorMessage));
@@ -119,6 +132,11 @@ describe('gulp-plumber', function () {
     });
 
     describe('throw', function () {
+        it('on piping to undefined', function () {
+            assert.throws(plumber().pipe,
+                /Can't pipe to undefined/);
+        });
+
         it('after cleanup', function (done) {
             var plumb = plumber({ errorHandler: false });
             var stream = plumb.pipe(gutil.noop());
@@ -141,22 +159,6 @@ describe('gulp-plumber', function () {
 
             done();
         });
-
-        /*before(function () {
-            this.originalException = process.listeners('uncaughtException').pop();
-            process.removeListener('uncaughtException', this.originalException);
-            this.uncaughtHandler = function uncaughtHandler(error) {
-                if (errorMessageRe.test(error)) { return this.done(); }
-                this.done(error);
-            }.bind(this);
-
-            process.on('uncaughtException', this.uncaughtHandler);
-        });
-
-        after(function () {
-            process.removeListener('uncaughtException', this.uncaughtHandler);
-            process.listeners('uncaughtException').push(this.originalException);
-        });*/
 
     });
 

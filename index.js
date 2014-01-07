@@ -38,6 +38,8 @@ function plumber(opts) {
     function pipe2(dest, options) {
         var source = this;
 
+        if (!dest) { throw new Error('Can\'t pipe to undefined'); }
+
         if (dest.opts && dest.opts.continueOnError !== false) {
             dest.opts.continueOnError = true;
         }
