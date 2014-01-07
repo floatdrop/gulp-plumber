@@ -13,6 +13,12 @@ var testString = 'should be in array';
 
 describe('gulp-plumber', function () {
 
+    it('should attach error handler by default', function (done) {
+        var stream = plumber({ handleErrors: true });
+        stream.emit('error', new Error('Bang!'));
+        done();
+    });
+
 	it('should be piped after error', function (done) {
 
 		var error;
