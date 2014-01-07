@@ -1,4 +1,4 @@
-# gulp-plumber [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
+# gulp-plumber [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
 
 > A plumber for [gulp](https://github.com/wearefractal/gulp)
 
@@ -56,6 +56,9 @@ Handle errors in underlying streams and output them to console.
 
 [travis-url]: http://travis-ci.org/floatdrop/gulp-plumber
 [travis-image]: https://secure.travis-ci.org/floatdrop/gulp-plumber.png?branch=master
+
+[coverall-url]: https://coveralls.io/r/floatdrop/gulp-plumber
+[coverall-image]: https://coveralls.io/repos/floatdrop/gulp-plumber/badge.png
 
 [depstat-url]: https://david-dm.org/floatdrop/gulp-plumber
 [depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.png
