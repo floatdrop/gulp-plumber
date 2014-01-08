@@ -7,7 +7,12 @@ var assert = require('assert'),
 delete require.cache[require.resolve('..')];
 
 var gutil = require('gulp-util'),
-	plumber = require('../');
+	plumber = require('../'),
+    through = require('through');
+
+var failingStream = new through(function (file) {
+    this.emit('error', new Error('Bang!'));
+});
 
 var errorMessage = 'Bang!',
     errorMessageRe = /Bang!/g;
@@ -30,6 +35,18 @@ describe('gulp-plumber', function () {
             var stream = plumber({ inherit: false }).pipe(gutil.noop()).pipe(gutil.noop());
             assert.equal(EE.listenerCount(stream, 'error'), 1);
         });
+    });
+
+    it('should inherit on(`error`) handlers', function (done) {
+        var stream = gutil.noop();
+        stream
+            .pipe(plumber({ errorHandler: function (error) {
+                assert.ok((/Bang!/g).test(error));
+                done();
+            } }))
+            .pipe(gutil.noop())
+            .pipe(failingStream);
+        stream.emit('data', 'This should be good');
     });
 
     it('should attach error handler by default source stream', function (done) {

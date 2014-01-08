@@ -33,7 +33,8 @@
     "event-stream": "~3.0.20",
     "gulp-mocha": "~0.2.0",
     "gulp-watch": "~0.3.2",
-    "gulp": "~3.2.4"
+    "gulp": "~3.2.4",
+    "through": "~2.3.4"
   },
   "engines": {
     "node": ">=0.10",
