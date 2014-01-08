@@ -10,10 +10,6 @@ var gutil = require('gulp-util'),
 	plumber = require('../'),
     through = require('through');
 
-var failingStream = new through(function (file) {
-    this.emit('error', new Error('Bang!'));
-});
-
 var errorMessage = 'Bang!',
     errorMessageRe = /Bang!/g;
 
@@ -45,8 +41,28 @@ describe('gulp-plumber', function () {
                 done();
             } }))
             .pipe(gutil.noop())
-            .pipe(failingStream);
+            .pipe(new through(function () {
+                this.emit('error', new Error('Bang!'));
+            }));
         stream.emit('data', 'This should be good');
+    });
+
+    it('should inherit on(`error`) handlers with `data` handler', function (done) {
+        var expected = 'This should be good';
+        var stream = gutil.noop();
+        stream
+            .pipe(plumber({ errorHandler: function (error) {
+                assert.ok((/Bang!/g).test(error));
+                done();
+            } }))
+            .on('data', function (data) {
+                assert.equal(data, expected);
+            })
+            .pipe(gutil.noop())
+            .pipe(new through(function () {
+                this.emit('error', new Error('Bang!'));
+            }));
+        stream.emit('data', expected);
     });
 
     it('should attach error handler by default source stream', function (done) {
