@@ -6,6 +6,32 @@ This plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs
 
 For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
 
+## Do not attach `data` handler to `gulp-plumber`
+
+This code will throw you an error, but not emit error event:
+
+```js
+gulp.src('./**/*.coffee')
+  .pipe(watch()) // works fine
+  .pipe(plumber())
+    // this breaks plumber when coffee() emits error
+    .on('data', function(){}) 
+  .pipe(coffee({bare: true})
+  // ....
+```
+
+To avoid it, use `gutil.noop` in between:
+
+```js
+gulp.src('./**/*.coffee')
+  .pipe(watch()) // works fine
+  .pipe(plumber())
+  .pipe(gutil.noop())
+     .on('data', function(){}) 
+  .pipe(coffee({bare: true})
+  // ....
+```
+
 ## Usage
 
 First, install `gulp-plumber` as a development dependency:
