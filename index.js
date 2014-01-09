@@ -40,8 +40,8 @@ function plumber(opts) {
 
         if (!dest) { throw new Error('Can\'t pipe to undefined'); }
 
-        if (dest.opts && dest.opts.continueOnError !== false) {
-            dest.opts.continueOnError = true;
+        if (dest.opts && dest.opts.failures !== false) {
+            dest.opts.failures = true;
         }
 
         if (opts.errorHandler !== false) {
