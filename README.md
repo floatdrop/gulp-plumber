@@ -84,7 +84,7 @@ Handle errors in underlying streams and output them to console.
 [travis-image]: https://secure.travis-ci.org/floatdrop/gulp-plumber.png?branch=master
 
 [coverall-url]: https://coveralls.io/r/floatdrop/gulp-plumber
-[coverall-image]: https://coveralls.io/repos/floatdrop/gulp-plumber/badge.png?theme=shields.io
+[coverall-image]: https://coveralls.io/repos/floatdrop/gulp-plumber/badge.png
 
 [depstat-url]: https://david-dm.org/floatdrop/gulp-plumber
-[depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.png
+[depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.png?theme=shields.io
