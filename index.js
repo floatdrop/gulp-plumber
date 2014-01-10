@@ -1,142 +1,81 @@
 'use strict';
 
-var PassThrough = require('stream').PassThrough;
+var Duplex = require('stream').Duplex;
 var EE = require('events').EventEmitter;
 var gutil = require('gulp-util');
 
 function trim(str) { return str.replace(/^\s+|\s+$/g, ''); }
 
-function defaultHandler(error) {
-    gutil.log(
-        gutil.colors.cyan('Plumber') + ' found unhandled error:',
-        gutil.colors.red(trim(error.toString())));
+function removeDefaultHandler(stream, event) {
+    var found = false;
+    stream.listeners(event).forEach(function (item) {
+        if (item.name === 'on' + event) {
+            found = item;
+            this.removeListener(event, item);
+        }
+    }, stream);
+    return found;
+}
+
+function defaultErrorHandler(error) {
+    if (EE.listenerCount(this, 'error') < 2) {
+        gutil.log(
+            gutil.colors.cyan('Plumber') + ' found unhandled error:',
+            gutil.colors.red(trim(error.toString())));
+    }
 }
 
 function plumber(opts) {
     opts = opts || {};
 
-    var errorHandler = (typeof opts.errorHandler === 'function') ?
-        opts.errorHandler :
-        defaultHandler;
+    var through = new Duplex({ objectMode: true });
+    through._read = function plumberRead() {};
+    through._write = function plumberWrite(file, encoding, done) {
+        through.push(file);
+        done();
+    };
 
-    var through = new PassThrough({ objectMode: true });
-
-    function preventDefaultErrorHandler(stream) {
-        stream.listeners('error').forEach(function (item) {
-            if (item.name === 'onerror') { this.removeListener('error', item); }
-        }, stream);
+    if (opts.errorHandler !== false) {
+        through.errorHandler = (typeof opts.errorHandler === 'function') ?
+            opts.errorHandler :
+            defaultErrorHandler;
     }
 
-    through.on('pipe', function (source) {
-        if (opts.errorHandler !== false) {
-            source.on('error', errorHandler);
-        }
+    through.on('finish', through.emit.bind(through, 'end'));
 
-        preventDefaultErrorHandler(source);
-    });
+    through.pipe2 = function pipe2(dest) {
+        if (dest._plumbed) { return dest.pipe(dest); }
 
-    function pipe2(dest, options) {
-        var source = this;
+        Duplex.prototype.pipe.apply(this, arguments);
 
-        if (!dest) { throw new Error('Can\'t pipe to undefined'); }
-
-        if (dest.opts && dest.opts.failures !== false) {
-            dest.opts.failures = true;
-        }
-
-        if (opts.errorHandler !== false) {
-            dest.on('error', errorHandler);
-        }
-
-        function ondata(chunk) {
-            if (dest.writable) {
-                if (false === dest.write(chunk) && source.pause) {
-                    source.pause();
-                }
-            }
-        }
-
-        source.on('data', ondata);
-
-        function ondrain() {
-            if (source.readable && source.resume) {
-                source.resume();
-            }
-        }
-
-        dest.on('drain', ondrain);
-
-        // If the 'end' option is not supplied, dest.end() will be called when
-        // source gets the 'end' or 'close' events.  Only dest.end() once.
-        if (!dest._isStdio && (!options || options.end !== false)) {
-            source.on('end', onend);
-            source.on('close', onclose);
-        }
-
-        var didOnEnd = false;
-        function onend() {
-            if (didOnEnd) { return; }
-            didOnEnd = true;
-
-            dest.end();
-        }
-
-
-        function onclose() {
-            if (didOnEnd) { return; }
-            didOnEnd = true;
-
-            if (typeof dest.destroy === 'function') { dest.destroy(); }
-        }
-
-        // don't leave dangling pipes when there are errors.
-        function onerror(er) {
-            if (EE.listenerCount(this, 'error') === 1) {
-                cleanup();
-                throw er; // Unhandled stream error in pipe.
-            }
-        }
-
-        source.on('error', onerror);
-        dest.on('error', onerror);
-
-        // remove all the event listeners that were added.
-        function cleanup() {
-            source.removeListener('data', ondata);
-            dest.removeListener('drain', ondrain);
-
-            source.removeListener('end', onend);
-            source.removeListener('close', onclose);
-
-            source.removeListener('error', onerror);
-            dest.removeListener('error', onerror);
-
-            source.removeListener('end', cleanup);
-
-            source.removeListener('close', cleanup);
-            dest.removeListener('close', cleanup);
-        }
-
-        source.on('end', cleanup);
-        source.on('close', cleanup);
-
-        dest.on('close', cleanup);
-
-        dest.emit('pipe', source);
-
-        // Allow for unix-like usage: A.pipe(B).pipe(C)
-
+        // Patching pipe method
         if (opts.inherit !== false) {
-            dest.pipe = pipe2;
+            dest.pipe = this.pipe2.bind(dest);
+            dest._plumbed = true;
+        }
+
+        // Wrapping panic onerror handler
+        var oldHandler = removeDefaultHandler(dest, 'error');
+        if (oldHandler) {
+            dest.on('error', function onerror2(er) {
+                if (EE.listenerCount(this, 'error') === 1) {
+                    oldHandler.call(dest, er);
+                }
+            });
+        }
+
+        // Placing custom on error handler
+        if (this.errorHandler) {
+            dest.errorHandler = this.errorHandler;
+            dest.on('error', this.errorHandler.bind(dest));
         }
 
         return dest;
-    }
+    }.bind(through);
 
-    through.pipe = pipe2;
+    through.pipe = through.pipe2;
 
     return through;
-
 }
 
 module.exports = plumber;
