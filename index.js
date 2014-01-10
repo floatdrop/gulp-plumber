@@ -20,7 +20,8 @@ function removeDefaultHandler(stream, event) {
 }
 
 function defaultErrorHandler(error) {
-    if (EE.listenerCount(this, 'error') < 2) {
+    // onerror2 and this handler
+    if (EE.listenerCount(this, 'error') < 3) {
         gutil.log(
             gutil.colors.cyan('Plumber') + ' found unhandled error:',
             gutil.colors.red(trim(error.toString())));

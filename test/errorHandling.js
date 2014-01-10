@@ -35,6 +35,18 @@ describe('errorHandler', function () {
             .pipe(this.failingQueueStream);
     });
 
+    it('default error handler should work', function (done) {
+        var mario = plumber();
+        var _ = gutil.log;
+        gutil.log = done.bind(null, null);
+        gulp.src(fixturesGlob)
+            .pipe(mario)
+            .pipe(this.failingQueueStream)
+            .on('end', function () {
+                gutil.log = _;
+            });
+    });
+
     describe('should attach error handler', function () {
         it('in non-flowing mode', function (done) {
             var delayed = gutil.noop();
