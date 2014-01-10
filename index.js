@@ -47,18 +47,19 @@ function plumber(opts) {
     through.on('finish', through.emit.bind(through, 'end'));
 
     function patchPipe(stream) {
-        stream.once('readable', function () {
-            patchPipe.bind(null, stream)();
-        });
         stream._pipe = stream.pipe;
         stream.pipe = stream.pipe2;
-        stream._plumbed = true;
+        stream.once('readable', patchPipe.bind(null, stream));
     }
 
     through.pipe2 = function pipe2(dest) {
-        if (dest._plumbed) { return dest.pipe(dest); }
+        if (dest._plumbed) {
+            return dest.pipe(dest);
+        }
 
         this._pipe.apply(this, arguments);
+
+        dest.pipe2 = pipe2;
 
         // Patching pipe method
         if (opts.inherit !== false) {
@@ -81,10 +82,10 @@ function plumber(opts) {
             dest.on('error', this.errorHandler.bind(dest));
         }
 
-        dest.pipe2 = this.pipe2;
+        dest._plumbed = true;
 
         return dest;
-    }.bind(through);
+    };
 
     patchPipe(through);
 

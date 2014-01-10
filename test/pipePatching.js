@@ -28,8 +28,7 @@ describe('pipe', function () {
         it('in non-flowing mode', function (done) {
             var lastNoop = gutil.noop();
             var mario = plumber();
-            console.log(mario.pipe2.name);
-            gulp.src(fixturesGlob)
+            var m = gulp.src(fixturesGlob)
                 .pipe(mario).pipe(gutil.noop()).pipe(gutil.noop()).pipe(lastNoop)
                 .on('end', function () {
                     should.exist(lastNoop._plumbed);
@@ -52,7 +51,8 @@ describe('pipe', function () {
     });
 
     it('piping into second plumber should does nothing', function (done) {
-        return done(new Error('This test is hanging'));
+        throw new Error('This test is hanging');
+
         var lastNoop = gutil.noop();
         var mario = plumber();
         gulp.src(fixturesGlob)
