@@ -48,10 +48,12 @@ function plumber(opts) {
     through.on('finish', through.emit.bind(through, 'end'));
 
     function patchPipe(stream) {
-        stream._pipe = stream.pipe;
-        stream.pipe = stream.pipe2;
-        stream.once('readable', patchPipe.bind(null, stream));
-        stream._plumbed = true;
+        if (stream.pipe2) {
+            stream._pipe = stream.pipe;
+            stream.pipe = stream.pipe2;
+            stream.once('readable', patchPipe.bind(null, stream));
+            stream._plumbed = true;
+        }
     }
 
     through.pipe2 = function pipe2(dest) {
