@@ -1,6 +1,8 @@
 'use strict';
 
-var Duplex = require('stream').Duplex;
+var stream = require('stream');
+var Stream = stream.Stream;
+var Duplex = stream.Duplex;
 var EE = require('events').EventEmitter;
 var gutil = require('gulp-util');
 
@@ -29,6 +31,7 @@ function plumber(opts) {
     opts = opts || {};
 
     var through = new Duplex({ objectMode: true });
+    through._plumber = true;
     through._read = function plumberRead() {};
     through._write = function plumberWrite(file, encoding, done) {
         through.push(file);
@@ -43,15 +46,23 @@ function plumber(opts) {
 
     through.on('finish', through.emit.bind(through, 'end'));
 
+    function patchPipe(stream) {
+        stream.once('readable', function () {
+            patchPipe.bind(null, stream)();
+        });
+        stream._pipe = stream.pipe;
+        stream.pipe = stream.pipe2;
+        stream._plumbed = true;
+    }
+
     through.pipe2 = function pipe2(dest) {
         if (dest._plumbed) { return dest.pipe(dest); }
 
-        Duplex.prototype.pipe.apply(this, arguments);
+        this._pipe.apply(this, arguments);
 
         // Patching pipe method
         if (opts.inherit !== false) {
-            dest.pipe = this.pipe2.bind(dest);
-            dest._plumbed = true;
+            patchPipe(dest);
         }
 
         // Wrapping panic onerror handler
@@ -70,10 +81,12 @@ function plumber(opts) {
             dest.on('error', this.errorHandler.bind(dest));
         }
 
+        dest.pipe2 = this.pipe2;
+
         return dest;
     }.bind(through);
 
-    through.pipe = through.pipe2;
+    patchPipe(through);
 
     return through;
 }

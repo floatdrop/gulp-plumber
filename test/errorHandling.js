@@ -50,7 +50,9 @@ describe('errorHandler', function () {
             setTimeout(delayed.write.bind(delayed, 'data'), delay);
             setTimeout(delayed.write.bind(delayed, 'data'), delay);
             delayed
-                .pipe(plumber({ errorHandler: done.bind(null, null) }))
+                .pipe(plumber({ errorHandler: function (err) {
+                    done();
+                } }))
                 .on('data', function (data) { })
                 .pipe(this.failingQueueStream);
         });
