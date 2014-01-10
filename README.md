@@ -2,35 +2,7 @@
 
 > A plumber for [gulp](https://github.com/wearefractal/gulp)
 
-This plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91).
-
-For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
-
-## Do not attach `data` handler to `gulp-plumber`
-
-This code will throw you an error, but not emit error event:
-
-```js
-gulp.src('./**/*.coffee')
-  .pipe(watch()) // works fine
-  .pipe(plumber())
-    // this breaks plumber when coffee() emits error
-    .on('data', function(){}) 
-  .pipe(coffee({bare: true})
-  // ....
-```
-
-To avoid it, use `gutil.noop` in between:
-
-```js
-gulp.src('./**/*.coffee')
-  .pipe(watch()) // works fine
-  .pipe(plumber())
-  .pipe(gutil.noop())
-     .on('data', function(){}) 
-  .pipe(coffee({bare: true})
-  // ....
-```
+This plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91). For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
 
 ## Usage
 
