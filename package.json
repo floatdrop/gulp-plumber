@@ -29,12 +29,14 @@
     "coveralls": "~2.6.0",
     "mocha-lcov-reporter": "0.0.1",
     "istanbul": "~0.1.44",
-    "should": "~2.1.0",
+    "should": "~2.1.1",
     "event-stream": "~3.0.20",
-    "gulp-mocha": "~0.2.0",
-    "gulp-watch": "~0.3.2",
+    "gulp-mocha": "~0.3.0",
+    "gulp-watch": "~0.3.3",
     "gulp": "~3.2.4",
-    "through": "~2.3.4"
+    "through": "~2.3.4",
+    "gulp-grep-stream": "0.0.2",
+    "sinon": "~1.7.3"
   },
   "engines": {
     "node": ">=0.10",
