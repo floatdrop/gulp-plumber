@@ -50,12 +50,12 @@ function plumber(opts) {
         stream._pipe = stream.pipe;
         stream.pipe = stream.pipe2;
         stream.once('readable', patchPipe.bind(null, stream));
+        stream._plumbed = true;
     }
 
     through.pipe2 = function pipe2(dest) {
-        if (dest._plumbed) {
-            return dest.pipe(dest);
-        }
+
+        if (dest._plumbed) { return dest; }
 
         this._pipe.apply(this, arguments);
 

@@ -51,14 +51,13 @@ describe('pipe', function () {
     });
 
     it('piping into second plumber should does nothing', function (done) {
-        throw new Error('This test is hanging');
-
         var lastNoop = gutil.noop();
         var mario = plumber();
         gulp.src(fixturesGlob)
             .pipe(mario)
             .pipe(gutil.noop()).pipe(gutil.noop())
             .pipe(mario)
+            .pipe(lastNoop)
             .on('end', function () {
                 should.exist(lastNoop._plumbed);
                 done();
