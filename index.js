@@ -56,6 +56,8 @@ function plumber(opts) {
 
     through.pipe2 = function pipe2(dest) {
 
+        if (!dest) { throw new Error('Can\'t pipe to undefined'); }
+
         if (dest._plumbed) { return dest; }
 
         this._pipe.apply(this, arguments);
@@ -73,6 +75,7 @@ function plumber(opts) {
             dest.on('error', function onerror2(er) {
                 if (EE.listenerCount(this, 'error') === 1) {
                     oldHandler.call(dest, er);
+                    this.removeListener('error', onerror2);
                 }
             });
         }

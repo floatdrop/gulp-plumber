@@ -3,6 +3,7 @@
 
 var should = require('should'),
     es = require('event-stream'),
+    EE = require('events').EventEmitter,
     gutil = require('gulp-util'),
     gulp = require('gulp');
 
@@ -91,6 +92,32 @@ describe('errorHandler', function () {
             }).should.throw();
             done();
         });
+    });
+
+    describe('throw', function () {
+        it('on piping to undefined', function () {
+            plumber().pipe.should.throw(/Can't pipe to undefined/);
+        });
+
+        it('after cleanup', function (done) {
+            var mario = plumber({ errorHandler: false });
+            var stream = mario.pipe(gutil.noop());
+
+            stream.emit('error', new Error(errorMessage));
+
+            EE.listenerCount(mario, 'data').should.eql(0);
+            EE.listenerCount(mario, 'drain').should.eql(0);
+            EE.listenerCount(mario, 'error').should.eql(0);
+            EE.listenerCount(mario, 'close').should.eql(0);
+
+            EE.listenerCount(stream, 'data').should.eql(0);
+            EE.listenerCount(stream, 'drain').should.eql(0);
+            EE.listenerCount(stream, 'error').should.eql(0);
+            EE.listenerCount(stream, 'close').should.eql(0);
+
+            done();
+        });
+
     });
 
     beforeEach(function () {
