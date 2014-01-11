@@ -1,4 +1,5 @@
-# :monkey: gulp-plumber [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
+# :monkey: gulp-plumber
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
 
 > A plumber for [gulp](https://github.com/wearefractal/gulp)
 
