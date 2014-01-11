@@ -1,10 +1,14 @@
-# gulp-plumber [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
+# :monkey: gulp-plumber [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
 
 > A plumber for [gulp](https://github.com/wearefractal/gulp)
 
-This plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91). For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
 
-## Usage
+
+This :monkey:-patch plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91). For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
+
+Briefly it replaces `pipe` method and removes standart `onerror` handler on `error` event, which unpipes streams on error by default.
+
+## Usage :monkey:
 
 First, install `gulp-plumber` as a development dependency:
 
@@ -12,7 +16,7 @@ First, install `gulp-plumber` as a development dependency:
 npm install --save gulp-plumber
 ```
 
-Then, add it to your `gulpfile.js`:
+Then, add it to you `gulpfile.js`:
 
 ```javascript
 var plumber = require('gulp-plumber');
@@ -24,9 +28,9 @@ gulp.src('./src/*.ext')
 	.pipe(gulp.dest('./dist'));
 ```
 
-## API
+## API :monkey:
 
-### plumber(options)
+### :monkey: plumber(options)
 
 Returns Stream, that fixes `pipe` methods on Streams that are next in pipeline.
 
@@ -45,7 +49,7 @@ Handle errors in underlying streams and output them to console.
  * `false` passed - error handler will not be attached.
  * `undefined` - default error handler will be attached.
 
-## License
+## License :monkey:
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
