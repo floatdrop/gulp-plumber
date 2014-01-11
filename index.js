@@ -17,6 +17,18 @@ function removeDefaultHandler(stream, event) {
     return found;
 }
 
+function wrapPanicOnErrorHandler(stream) {
+    var oldHandler = removeDefaultHandler(stream, 'error');
+    if (oldHandler) {
+        stream.on('error', function onerror2(er) {
+            if (EE.listenerCount(stream, 'error') === 1) {
+                this.removeListener('error', onerror2);
+                oldHandler.call(stream, er);
+            }
+        });
+    }
+}
+
 function defaultErrorHandler(error) {
     // onerror2 and this handler
     if (EE.listenerCount(this, 'error') < 3) {
@@ -40,6 +52,7 @@ function plumber(opts) {
 
     function patchPipe(stream) {
         if (stream.pipe2) {
+            wrapPanicOnErrorHandler(stream);
             stream._pipe = stream._pipe || stream.pipe;
             stream.pipe = stream.pipe2;
             stream.once('readable', patchPipe.bind(null, stream));
@@ -63,15 +76,7 @@ function plumber(opts) {
         }
 
         // Wrapping panic onerror handler
-        var oldHandler = removeDefaultHandler(dest, 'error');
-        if (oldHandler) {
-            dest.on('error', function onerror2(er) {
-                if (EE.listenerCount(dest, 'error') === 1) {
-                    this.removeListener('error', onerror2);
-                    oldHandler.call(dest, er);
-                }
-            });
-        }
+        wrapPanicOnErrorHandler(dest);
 
         // Placing custom on error handler
         if (this.errorHandler) {
