@@ -13,6 +13,32 @@ var fixturesGlob = ['./test/fixtures/*'];
 
 describe('pipe', function () {
 
+    it('should keep piping after error', function (done) {
+        var expected = [1, 3, 5];
+
+        var badBoy = es.through(function (data) {
+            if (data % 2 === 0) {
+                return this.emit('error', new Error(data));
+            }
+            this.emit('data', data);
+        });
+
+        var actual = [];
+
+        es.readArray([1, 2, 3, 4, 5, 6])
+            .pipe(plumber())
+            .pipe(badBoy)
+            .pipe(es.through(function (data) {
+                actual.push(data);
+                this.emit('data', data);
+            }))
+            .on('error', function (err) { console.log('data: ' + err); } )
+            .on('end', function () {
+                actual.should.eql(expected);
+                done();
+            });
+    });
+
     it('should skip patching with `inherit` === false', function (done) {
         var lastNoop = gutil.noop();
         var mario = plumber({ inherit: false });

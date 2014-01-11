@@ -21,7 +21,6 @@ function wrapPanicOnErrorHandler(stream) {
     var oldHandler = removeDefaultHandler(stream, 'error');
     if (oldHandler) {
         stream.on('error', function onerror2(er) {
-            removeDefaultHandler(stream, 'error');
             if (EE.listenerCount(stream, 'error') === 1) {
                 this.removeListener('error', onerror2);
                 oldHandler.call(stream, er);
@@ -66,6 +65,7 @@ function plumber(opts) {
         if (!dest) { throw new Error('Can\'t pipe to undefined'); }
 
         this._pipe.apply(this, arguments);
+        removeDefaultHandler(this, 'error');
 
         if (dest._plumber) { return dest; }
 
@@ -75,9 +75,6 @@ function plumber(opts) {
         if (opts.inherit !== false) {
             patchPipe(dest);
         }
-
-        // Wrapping panic onerror handler
-        wrapPanicOnErrorHandler(dest);
 
         // Placing custom on error handler
         if (this.errorHandler) {
