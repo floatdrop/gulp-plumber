@@ -17,7 +17,10 @@ describe('pipe', function () {
         var lastNoop = gutil.noop();
         var mario = plumber({ inherit: false });
         gulp.src(fixturesGlob)
-            .pipe(mario).pipe(gutil.noop()).pipe(gutil.noop()).pipe(lastNoop)
+            .pipe(mario)
+            .pipe(gutil.noop())
+            .pipe(gutil.noop())
+            .pipe(lastNoop)
             .on('end', function () {
                 should.not.exist(lastNoop._plumbed);
                 done();
@@ -29,7 +32,10 @@ describe('pipe', function () {
             var lastNoop = gutil.noop();
             var mario = plumber();
             var m = gulp.src(fixturesGlob)
-                .pipe(mario).pipe(gutil.noop()).pipe(gutil.noop()).pipe(lastNoop)
+                .pipe(mario)
+                .pipe(gutil.noop())
+                .pipe(gutil.noop())
+                .pipe(lastNoop)
                 .on('end', function () {
                     should.exist(lastNoop._plumbed);
                     done();
@@ -42,7 +48,9 @@ describe('pipe', function () {
             gulp.src(fixturesGlob)
                 .pipe(mario)
                 .on('data', function (file) { should.exist(file); })
-                .pipe(gutil.noop()).pipe(gutil.noop()).pipe(lastNoop)
+                .pipe(gutil.noop())
+                .pipe(gutil.noop())
+                .pipe(lastNoop)
                 .on('end', function () {
                     should.exist(lastNoop._plumbed);
                     done();
@@ -52,11 +60,10 @@ describe('pipe', function () {
 
     it('piping into second plumber should does nothing', function (done) {
         var lastNoop = gutil.noop();
-        var mario = plumber();
         gulp.src(fixturesGlob)
-            .pipe(mario)
+            .pipe(plumber())
             .pipe(gutil.noop()).pipe(gutil.noop())
-            .pipe(mario)
+            .pipe(plumber())
             .pipe(lastNoop)
             .on('end', function () {
                 should.exist(lastNoop._plumbed);

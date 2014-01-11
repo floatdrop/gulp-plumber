@@ -1,8 +1,6 @@
 'use strict';
 
-var stream = require('stream');
-var Stream = stream.Stream;
-var Duplex = stream.Duplex;
+var Through = require('through');
 var EE = require('events').EventEmitter;
 var gutil = require('gulp-util');
 
@@ -31,13 +29,8 @@ function defaultErrorHandler(error) {
 function plumber(opts) {
     opts = opts || {};
 
-    var through = new Duplex({ objectMode: true });
+    var through = new Through(function (file) { this.queue(file); });
     through._plumber = true;
-    through._read = function plumberRead() {};
-    through._write = function plumberWrite(file, encoding, done) {
-        through.push(file);
-        done();
-    };
 
     if (opts.errorHandler !== false) {
         through.errorHandler = (typeof opts.errorHandler === 'function') ?
@@ -45,11 +38,9 @@ function plumber(opts) {
             defaultErrorHandler;
     }
 
-    through.on('finish', through.emit.bind(through, 'end'));
-
     function patchPipe(stream) {
         if (stream.pipe2) {
-            stream._pipe = stream.pipe;
+            stream._pipe = stream._pipe || stream.pipe;
             stream.pipe = stream.pipe2;
             stream.once('readable', patchPipe.bind(null, stream));
             stream._plumbed = true;
@@ -60,9 +51,9 @@ function plumber(opts) {
 
         if (!dest) { throw new Error('Can\'t pipe to undefined'); }
 
-        if (dest._plumbed) { return dest; }
-
         this._pipe.apply(this, arguments);
+
+        if (dest._plumber) { return dest; }
 
         dest.pipe2 = pipe2;
 
