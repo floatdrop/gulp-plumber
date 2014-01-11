@@ -11,9 +11,21 @@ var fixturesGlob = ['./test/fixtures/*'];
 
 describe('stream', function () {
 
+    it('should work with es.readarray', function (done) {
+        var expected = ['1\n', '2\n', '3\n', '4\n', '5\n'];
+
+        es.readArray([1, 2, 3, 4, 5])
+            .pipe(plumber())
+            .pipe(es.stringify())
+            .pipe(es.writeArray(function (error, array) {
+                array.should.eql(expected);
+                done();
+            }));
+    });
+
     it('should emit `end` after source emit `finish`', function (done) {
         gulp.src(fixturesGlob)
-            .pipe(plumber({ errorHandler: done }))
+            .pipe(plumber())
             .on('finish', done)
             .on('error', done);
     });
