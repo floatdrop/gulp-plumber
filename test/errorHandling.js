@@ -103,7 +103,9 @@ describe('errorHandler', function () {
             var mario = plumber({ errorHandler: false });
             var stream = mario.pipe(gutil.noop());
 
-            stream.emit('error', new Error(errorMessage));
+            (function () {
+                stream.emit('error', new Error(errorMessage));
+            }).should.throw();
 
             EE.listenerCount(mario, 'data').should.eql(0);
             EE.listenerCount(mario, 'drain').should.eql(0);

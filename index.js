@@ -66,9 +66,9 @@ function plumber(opts) {
         var oldHandler = removeDefaultHandler(dest, 'error');
         if (oldHandler) {
             dest.on('error', function onerror2(er) {
-                if (EE.listenerCount(this, 'error') === 1) {
-                    oldHandler.call(dest, er);
+                if (EE.listenerCount(dest, 'error') === 1) {
                     this.removeListener('error', onerror2);
+                    oldHandler.call(dest, er);
                 }
             });
         }
