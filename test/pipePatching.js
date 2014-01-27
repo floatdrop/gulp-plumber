@@ -3,7 +3,7 @@
 
 var should = require('should'),
     es = require('event-stream'),
-    gutil = require('gulp-util'),
+    noop = require('./util').noop,
     gulp = require('gulp');
 
 delete require.cache[require.resolve('..')];
@@ -32,7 +32,7 @@ describe('pipe', function () {
                 actual.push(data);
                 this.emit('data', data);
             }))
-            .on('error', function (err) { console.log('data: ' + err); } )
+            .on('error', function (err) { console.log('data: ' + err); })
             .on('end', function () {
                 actual.should.eql(expected);
                 done();
@@ -40,12 +40,12 @@ describe('pipe', function () {
     });
 
     it('should skip patching with `inherit` === false', function (done) {
-        var lastNoop = gutil.noop();
+        var lastNoop = noop();
         var mario = plumber({ inherit: false });
         gulp.src(fixturesGlob)
             .pipe(mario)
-            .pipe(gutil.noop())
-            .pipe(gutil.noop())
+            .pipe(noop())
+            .pipe(noop())
             .pipe(lastNoop)
             .on('end', function () {
                 should.not.exist(lastNoop._plumbed);
@@ -55,12 +55,12 @@ describe('pipe', function () {
 
     describe('should be patched at itself and underlying streams', function () {
         it('in non-flowing mode', function (done) {
-            var lastNoop = gutil.noop();
+            var lastNoop = noop();
             var mario = plumber();
             var m = gulp.src(fixturesGlob)
                 .pipe(mario)
-                .pipe(gutil.noop())
-                .pipe(gutil.noop())
+                .pipe(noop())
+                .pipe(noop())
                 .pipe(lastNoop)
                 .on('end', function () {
                     should.exist(lastNoop._plumbed);
@@ -69,13 +69,13 @@ describe('pipe', function () {
         });
 
         it('in flowing mode', function (done) {
-            var lastNoop = gutil.noop();
+            var lastNoop = noop();
             var mario = plumber();
             gulp.src(fixturesGlob)
                 .pipe(mario)
                 .on('data', function (file) { should.exist(file); })
-                .pipe(gutil.noop())
-                .pipe(gutil.noop())
+                .pipe(noop())
+                .pipe(noop())
                 .pipe(lastNoop)
                 .on('end', function () {
                     should.exist(lastNoop._plumbed);
@@ -85,10 +85,10 @@ describe('pipe', function () {
     });
 
     it('piping into second plumber should does nothing', function (done) {
-        var lastNoop = gutil.noop();
+        var lastNoop = noop();
         gulp.src(fixturesGlob)
             .pipe(plumber())
-            .pipe(gutil.noop()).pipe(gutil.noop())
+            .pipe(noop()).pipe(noop())
             .pipe(plumber())
             .pipe(lastNoop)
             .on('end', function () {
