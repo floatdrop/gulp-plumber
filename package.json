@@ -22,7 +22,7 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "gulp-util": "~2.2.0",
+    "gulp-util": "~2",
     "through": "~2.3.4"
   },
   "devDependencies": {
@@ -34,9 +34,12 @@
     "event-stream": "~3.0.20",
     "gulp-mocha": "~0.3.0",
     "gulp-watch": "~0.3.3",
-    "gulp": "~3.2.4",
+    "gulp": "~3",
     "gulp-grep-stream": "0.0.2",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "rimraf": "~2.2.6",
+    "async": "~0.2.10",
+    "hashdir": "0.0.1"
   },
   "engines": {
     "node": ">=0.10",
