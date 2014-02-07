@@ -14,7 +14,7 @@ Briefly it replaces `pipe` method and removes standart `onerror` handler on `err
 First, install `gulp-plumber` as a development dependency:
 
 ```shell
-npm install --save gulp-plumber
+npm install --save-dev gulp-plumber
 ```
 
 Then, add it to you `gulpfile.js`:
