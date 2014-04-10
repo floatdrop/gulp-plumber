@@ -16,6 +16,31 @@ var fixturesGlob = ['./test/fixtures/index.js', './test/fixtures/test.js'];
 var delay = 20;
 
 describe('errorHandler', function () {
+
+    beforeEach(function () {
+        this.failingEmitStream = new es.through(function (file) {
+            this.emit('data', file);
+            this.emit('error', new Error('Bang!'));
+        });
+        var i = 0;
+        this.failingQueueStream = new es.through(function (file) {
+            this.queue(file);
+            console.log('error');
+            i ++;
+            if (i === 2) {
+                this.emit('error', new Error('Bang!'));
+            }
+        });
+    });
+
+    before(function (done) {
+        gulp.src(fixturesGlob)
+            .pipe(es.writeArray(function (err, array) {
+                this.expected = array;
+                done();
+            }.bind(this)));
+    });
+
     it('should attach custom error handler', function (done) {
         gulp.src(fixturesGlob)
             .pipe(plumber({ errorHandler: function (error) {
@@ -58,17 +83,16 @@ describe('errorHandler', function () {
                 .pipe(this.failingQueueStream);
         });
 
-        it('in flowing mode', function (done) {
-            var delayed = gutil.noop();
-            setTimeout(delayed.write.bind(delayed, 'data'), delay);
-            setTimeout(delayed.write.bind(delayed, 'data'), delay);
-            delayed
-                .pipe(plumber({ errorHandler: function (err) {
-                    done();
-                } }))
-                .on('data', function (data) { })
-                .pipe(this.failingQueueStream);
-        });
+        // it.only('in flowing mode', function (done) {
+        //     var delayed = gutil.noop();
+        //     setTimeout(delayed.write.bind(delayed, 'data'), delay);
+        //     setTimeout(delayed.write.bind(delayed, 'data'), delay);
+        //     delayed
+        //         .pipe(plumber({ errorHandler: done.bind(null, null) }))
+        // // You cant do on('data') and pipe simultaniously.
+        //         .on('data', function () { })
+        //         .pipe(this.failingQueueStream);
+        // });
     });
 
     describe('should not attach error handler', function () {
@@ -82,16 +106,17 @@ describe('errorHandler', function () {
             done();
         });
 
-        it('in flowing mode', function (done) {
-            (function () {
-                gulp.src(fixturesGlob)
-                    .pipe(plumber({ errorHandler: false }))
-                    .on('data', function () { })
-                    .pipe(this.failingQueueStream)
-                    .on('end', done);
-            }).should.throw();
-            done();
-        });
+        // it('in flowing mode', function (done) {
+        //     (function () {
+        //         gulp.src(fixturesGlob)
+        //             .pipe(plumber({ errorHandler: false }))
+        // // You cant do on('data') and pipe simultaniously.
+        //             .on('data', function () { })
+        //             .pipe(this.failingQueueStream)
+        //             .on('end', done);
+        //     }).should.throw();
+        //     done();
+        // });
     });
 
     describe('throw', function () {
@@ -122,26 +147,4 @@ describe('errorHandler', function () {
 
     });
 
-    beforeEach(function () {
-        this.failingEmitStream = new es.through(function (file) {
-            this.emit('data', file);
-            this.emit('error', new Error('Bang!'));
-        });
-        var i = 0;
-        this.failingQueueStream = new es.through(function (file) {
-            this.queue(file);
-            i ++;
-            if (i === 2) {
-                this.emit('error', new Error('Bang!'));
-            }
-        });
-    });
-
-    before(function (done) {
-        gulp.src(fixturesGlob)
-            .pipe(es.writeArray(function (err, array) {
-                this.expected = array;
-                done();
-            }.bind(this)));
-    });
 });
