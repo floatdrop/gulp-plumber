@@ -32,7 +32,7 @@ describe('pipe', function () {
                 actual.push(data);
                 this.emit('data', data);
             }))
-            .on('error', function (err) { console.log('data: ' + err); })
+            .on('error', function (err) { done(err); })
             .on('end', function () {
                 actual.should.eql(expected);
                 done();

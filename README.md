@@ -50,6 +50,21 @@ Handle errors in underlying streams and output them to console.
  * `false` passed - error handler will not be attached.
  * `undefined` - default error handler will be attached.
 
+### plumber.stop()
+
+This method will return default behaviour for pipeline after it was piped.
+
+```javascript
+var plumber = require('gulp-plumber');
+
+gulp.src('./src/*.scss')
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(uglify())
+    .pipe(plumber.stop())
+    .pipe(gulp.dest('./dist'));
+```
+
 ## License :monkey:
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)

@@ -1,6 +1,6 @@
 'use strict';
 
-var Through = require('through');
+var through2 = require('through2');
 var EE = require('events').EventEmitter;
 var gutil = require('gulp-util');
 
@@ -41,7 +41,7 @@ function defaultErrorHandler(error) {
 function plumber(opts) {
     opts = opts || {};
 
-    var through = new Through(function (file) { this.queue(file); });
+    var through = through2.obj();
     through._plumber = true;
 
     if (opts.errorHandler !== false) {
@@ -65,6 +65,9 @@ function plumber(opts) {
         if (!dest) { throw new Error('Can\'t pipe to undefined'); }
 
         this._pipe.apply(this, arguments);
+
+        if (dest._unplumbed) { return dest; }
+
         removeDefaultHandler(this, 'error');
 
         if (dest._plumber) { return dest; }
@@ -93,3 +96,9 @@ function plumber(opts) {
 }
 
 module.exports = plumber;
+
+module.exports.stop = function () {
+    var through = through2.obj();
+    through._unplumbed = true;
+    return through;
+};

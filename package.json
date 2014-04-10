@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "gulp-util": "~2",
-    "through": "~2.3.4"
+    "through2": "~0.4.1"
   },
   "devDependencies": {
     "mocha": "~1.14.0",
