@@ -25,7 +25,6 @@ describe('errorHandler', function () {
         var i = 0;
         this.failingQueueStream = new es.through(function (file) {
             this.queue(file);
-            console.log('error');
             i ++;
             if (i === 2) {
                 this.emit('error', new Error('Bang!'));
@@ -47,6 +46,15 @@ describe('errorHandler', function () {
                 error.toString().should.include(errorMessage);
                 done();
             }}))
+            .pipe(this.failingQueueStream);
+    });
+
+    it('should attach custom error handler with function argument', function (done) {
+        gulp.src(fixturesGlob)
+            .pipe(plumber(function (error) {
+                error.toString().should.include(errorMessage);
+                done();
+            }))
             .pipe(this.failingQueueStream);
     });
 

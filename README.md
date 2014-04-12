@@ -31,9 +31,15 @@ gulp.src('./src/*.ext')
 
 ## API :monkey:
 
-### :monkey: plumber(options)
+### :monkey: plumber([options])
 
 Returns Stream, that fixes `pipe` methods on Streams that are next in pipeline.
+
+#### options
+Type: `Object` / `Function`
+Default: `{}`
+
+Sets options described below from its properties. If type is `Function` it will set `errorHandler`.
 
 #### options.inherit
 Type: `Boolean`  

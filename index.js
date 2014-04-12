@@ -41,6 +41,10 @@ function defaultErrorHandler(error) {
 function plumber(opts) {
     opts = opts || {};
 
+    if (typeof opts === 'function') {
+        opts = { errorHandler: opts };
+    }
+
     var through = through2.obj();
     through._plumber = true;
 
