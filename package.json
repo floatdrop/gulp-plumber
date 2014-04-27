@@ -1,7 +1,7 @@
 {
   "name": "gulp-plumber",
   "version": "0.6.1",
-  "description": "A plumber, for gulp pipeline",
+  "description": "Prevent pipe breaking caused by errors from gulp plugins",
   "keywords": [
     "gulpplugin"
   ],

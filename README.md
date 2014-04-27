@@ -1,9 +1,7 @@
 # :monkey: gulp-plumber
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
 
-> A plumber for [gulp](https://github.com/wearefractal/gulp)
-
-
+> Prevent pipe breaking caused by errors from [gulp](https://github.com/wearefractal/gulp) plugins
 
 This :monkey:-patch plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91). For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
 
@@ -42,7 +40,7 @@ Default: `{}`
 Sets options described below from its properties. If type is `Function` it will set `errorHandler`.
 
 #### options.inherit
-Type: `Boolean`  
+Type: `Boolean`
 Default: `true`
 
 Monkeypatch `pipe` functions in underlying streams in pipeline.
