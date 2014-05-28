@@ -5,7 +5,7 @@
 
 This :monkey:-patch plugin is fixing [issue with Node Streams piping](https://github.com/gulpjs/gulp/issues/91). For explanations, read [this small article](https://gist.github.com/floatdrop/8269868).
 
-Briefly it replaces `pipe` method and removes standart `onerror` handler on `error` event, which unpipes streams on error by default.
+Briefly it replaces `pipe` method and removes standard `onerror` handler on `error` event, which unpipes streams on error by default.
 
 ## Usage :monkey:
 
