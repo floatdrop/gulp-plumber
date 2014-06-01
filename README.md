@@ -74,13 +74,14 @@ gulp.src('./src/*.scss')
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 [npm-url]: https://npmjs.org/package/gulp-plumber
-[npm-image]: https://badge.fury.io/js/gulp-plumber.png
+[npm-image]: https://badge.fury.io/js/gulp-plumber.svg
 
 [travis-url]: http://travis-ci.org/floatdrop/gulp-plumber
-[travis-image]: https://secure.travis-ci.org/floatdrop/gulp-plumber.png?branch=master
+[travis-image]: https://secure.travis-ci.org/floatdrop/gulp-plumber.svg?branch=master
 
 [coverall-url]: https://coveralls.io/r/floatdrop/gulp-plumber
-[coverall-image]: https://coveralls.io/repos/floatdrop/gulp-plumber/badge.png
+[coverall-image]: http://img.shields.io/coveralls/floatdrop/gulp-plumber.svg
+
 
 [depstat-url]: https://david-dm.org/floatdrop/gulp-plumber
-[depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.png?theme=shields.io
+[depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.svg?theme=shields.io
