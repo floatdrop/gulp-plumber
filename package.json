@@ -1,6 +1,6 @@
 {
   "name": "gulp-plumber",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Prevent pipe breaking caused by errors from gulp plugins",
   "keywords": [
     "gulpplugin"
