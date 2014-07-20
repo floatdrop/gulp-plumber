@@ -66,7 +66,7 @@ function plumber(opts) {
 
     through.pipe2 = function pipe2(dest) {
 
-        if (!dest) { throw new Error('Can\'t pipe to undefined'); }
+        if (!dest) { throw new gutil.PluginError('plumber', 'Can\'t pipe to undefined'); }
 
         this._pipe.apply(this, arguments);
 
