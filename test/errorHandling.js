@@ -43,7 +43,7 @@ describe('errorHandler', function () {
     it('should attach custom error handler', function (done) {
         gulp.src(fixturesGlob)
             .pipe(plumber({ errorHandler: function (error) {
-                error.toString().should.include(errorMessage);
+                error.toString().should.containEql(errorMessage);
                 done();
             }}))
             .pipe(this.failingQueueStream);
@@ -52,7 +52,7 @@ describe('errorHandler', function () {
     it('should attach custom error handler with function argument', function (done) {
         gulp.src(fixturesGlob)
             .pipe(plumber(function (error) {
-                error.toString().should.include(errorMessage);
+                error.toString().should.containEql(errorMessage);
                 done();
             }))
             .pipe(this.failingQueueStream);
@@ -61,7 +61,7 @@ describe('errorHandler', function () {
     it('should attach default error handler', function (done) {
         var mario = plumber();
         mario.errorHandler = function (error) {
-            error.toString().should.include(errorMessage);
+            error.toString().should.containEql(errorMessage);
             done();
         };
         gulp.src(fixturesGlob)

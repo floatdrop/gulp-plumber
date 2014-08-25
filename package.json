@@ -23,23 +23,19 @@
   },
   "dependencies": {
     "gulp-util": "~3",
-    "through2": "~0.5"
+    "through2": "~0.6"
   },
   "devDependencies": {
-    "mocha": "~1.14.0",
-    "coveralls": "~2.6.0",
+    "mocha": "~1.21.4",
+    "coveralls": "~2.11.1",
     "mocha-lcov-reporter": "0.0.1",
-    "istanbul": "~0.1.44",
-    "should": "~2.1.1",
-    "event-stream": "~3.0.20",
-    "gulp-mocha": "~0.3.0",
-    "gulp-watch": "~0.3.3",
+    "istanbul": "~0.3.0",
+    "should": "~4.0.4",
+    "event-stream": "~3.1.7",
+    "gulp-mocha": "~1.0.0",
+    "gulp-watch": "~0.6.9",
     "gulp": "~3",
     "gulp-grep-stream": "0.0.2",
-    "sinon": "~1.7.3",
-    "rimraf": "~2.2.6",
-    "async": "~0.2.10",
-    "hashdir": "0.0.1",
     "through": "~2.3.4"
   },
   "engines": {
