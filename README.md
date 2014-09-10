@@ -37,7 +37,7 @@ Returns Stream, that fixes `pipe` methods on Streams that are next in pipeline.
 Type: `Object` / `Function`
 Default: `{}`
 
-Sets options described below from its properties. If type is `Function` it will set `errorHandler`.
+Sets options described below from its properties. If type is `Function` it will be set as `errorHandler`.
 
 #### options.inherit
 Type: `Boolean`
