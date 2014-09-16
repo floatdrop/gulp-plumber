@@ -1,5 +1,5 @@
 # :monkey: gulp-plumber
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverall Status][coverall-image]][coverall-url] [![Dependency Status][depstat-image]][depstat-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Dependency Status][depstat-image]][depstat-url]
 
 > Prevent pipe breaking caused by errors from [gulp](https://github.com/wearefractal/gulp) plugins
 
@@ -74,14 +74,13 @@ gulp.src('./src/*.scss')
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 [npm-url]: https://npmjs.org/package/gulp-plumber
-[npm-image]: https://badge.fury.io/js/gulp-plumber.svg
+[npm-image]: http://img.shields.io/npm/v/gulp-plumber.svg?style=flat
 
-[travis-url]: http://travis-ci.org/floatdrop/gulp-plumber
-[travis-image]: https://secure.travis-ci.org/floatdrop/gulp-plumber.svg?branch=master
+[travis-url]: https://travis-ci.org/floatdrop/gulp-plumber
+[travis-image]: http://img.shields.io/travis/floatdrop/gulp-plumber.svg?style=flat
 
-[coverall-url]: https://coveralls.io/r/floatdrop/gulp-plumber
-[coverall-image]: http://img.shields.io/coveralls/floatdrop/gulp-plumber.svg
-
+[coveralls-url]: https://coveralls.io/r/floatdrop/gulp-plumber
+[coveralls-image]: http://img.shields.io/coveralls/floatdrop/gulp-plumber.svg?style=flat
 
 [depstat-url]: https://david-dm.org/floatdrop/gulp-plumber
-[depstat-image]: https://david-dm.org/floatdrop/gulp-plumber.svg?theme=shields.io
+[depstat-image]: http://img.shields.io/david/floatdrop/gulp-plumber.svg?style=flat
