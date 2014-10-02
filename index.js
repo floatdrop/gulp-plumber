@@ -31,8 +31,9 @@ function defaultErrorHandler(error) {
     // onerror2 and this handler
     if (EE.listenerCount(this, 'error') < 3) {
         gutil.log(
-            gutil.colors.cyan('Plumber') + ' found unhandled error:',
-            gutil.colors.red(error.toString().trim()));
+            gutil.colors.cyan('Plumber') + gutil.colors.red(' found unhandled error:'),
+            error.toString()
+        );
     }
 }
 
