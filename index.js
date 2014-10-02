@@ -4,8 +4,6 @@ var through2 = require('through2');
 var EE = require('events').EventEmitter;
 var gutil = require('gulp-util');
 
-function trim(str) { return str.replace(/^\s+|\s+$/g, ''); }
-
 function removeDefaultHandler(stream, event) {
     var found = false;
     stream.listeners(event).forEach(function (item) {
@@ -34,7 +32,7 @@ function defaultErrorHandler(error) {
     if (EE.listenerCount(this, 'error') < 3) {
         gutil.log(
             gutil.colors.cyan('Plumber') + ' found unhandled error:',
-            gutil.colors.red(trim(error.toString())));
+            gutil.colors.red(error.toString().trim()));
     }
 }
 
