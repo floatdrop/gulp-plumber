@@ -15,7 +15,7 @@ First, install `gulp-plumber` as a development dependency:
 npm install --save-dev gulp-plumber
 ```
 
-Then, add it to you `gulpfile.js`:
+Then, add it to your `gulpfile.js`:
 
 ```javascript
 var plumber = require('gulp-plumber');
