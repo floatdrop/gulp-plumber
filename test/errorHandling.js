@@ -7,8 +7,6 @@ var should = require('should'),
     gutil = require('gulp-util'),
     gulp = require('gulp');
 
-delete require.cache[require.resolve('..')];
-
 var plumber = require('../');
 
 var errorMessage = 'Bang!';

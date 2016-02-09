@@ -6,8 +6,6 @@ var should = require('should'),
     noop = require('./util').noop,
     gulp = require('gulp');
 
-delete require.cache[require.resolve('..')];
-
 var plumber = require('../');
 var fixturesGlob = ['./test/fixtures/*'];
 

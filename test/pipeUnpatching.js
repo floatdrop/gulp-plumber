@@ -4,8 +4,6 @@
 var es = require('event-stream'),
     gulp = require('gulp');
 
-delete require.cache[require.resolve('..')];
-
 var plumber = require('../');
 var fixturesGlob = ['./test/fixtures/*'];
 
