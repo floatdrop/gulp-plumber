@@ -41,7 +41,7 @@ function plumber(opts) {
 	opts = opts || {};
 
 	if (typeof opts === 'function') {
-		opts = { errorHandler: opts };
+		opts = {errorHandler: opts};
 	}
 
 	var through = through2.obj();
@@ -64,16 +64,21 @@ function plumber(opts) {
 	}
 
 	through.pipe2 = function pipe2(dest) {
-
-		if (!dest) { throw new gutil.PluginError('plumber', 'Can\'t pipe to undefined'); }
+		if (!dest) {
+			throw new gutil.PluginError('plumber', 'Can\'t pipe to undefined');
+		}
 
 		this._pipe.apply(this, arguments);
 
-		if (dest._unplumbed) { return dest; }
+		if (dest._unplumbed) {
+			return dest;
+		}
 
 		removeDefaultHandler(this, 'error');
 
-		if (dest._plumber) { return dest; }
+		if (dest._plumber) {
+			return dest;
+		}
 
 		dest.pipe2 = pipe2;
 

@@ -18,8 +18,7 @@
     "url": "git://github.com/floatdrop/gulp-plumber.git"
   },
   "scripts": {
-    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "xo && mocha -R spec"
   },
   "dependencies": {
     "gulp-util": "^3",
@@ -32,11 +31,17 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "mocha-lcov-reporter": "^1.0.0",
-    "should": "^8.2.2"
+    "should": "^8.2.2",
+    "xo": "^0.12.1"
   },
   "engines": {
     "node": ">=0.10",
     "npm": ">=1.2.10"
+  },
+  "xo": {
+    "ignore": [
+      "test/**"
+    ]
   },
   "license": "MIT"
 }
