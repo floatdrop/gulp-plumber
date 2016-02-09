@@ -26,17 +26,14 @@
     "through2": "^2"
   },
   "devDependencies": {
-    "mocha": "~1.21.4",
-    "coveralls": "~2.11.1",
-    "mocha-lcov-reporter": "0.0.1",
-    "istanbul": "~0.3.0",
-    "should": "~4.0.4",
-    "event-stream": "~3.1.7",
-    "gulp-mocha": "~1.0.0",
-    "gulp-watch": "~0.6.9",
-    "gulp": "~3",
-    "gulp-grep-stream": "0.0.2",
-    "through": "~2.3.4"
+    "coveralls": "^2.11.6",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.1",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.0.0",
+    "should": "^8.2.2",
+    "through": "^2.3.8"
   },
   "engines": {
     "node": ">=0.10",
