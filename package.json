@@ -22,8 +22,8 @@
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "gulp-util": "~3",
-    "through2": "~0.6"
+    "gulp-util": "^3",
+    "through2": "^2"
   },
   "devDependencies": {
     "mocha": "~1.21.4",
