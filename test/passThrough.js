@@ -2,8 +2,8 @@
 'use strict';
 
 var should = require('should'),
+    through2 = require('through2'),
     es = require('event-stream'),
-    gutil = require('gulp-util'),
     gulp = require('gulp');
 
 var plumber = require('../');
@@ -14,7 +14,7 @@ describe('stream', function () {
     it('piping into second plumber should keep piping', function (done) {
         gulp.src(fixturesGlob)
             .pipe(plumber())
-            .pipe(gutil.noop())
+            .pipe(through2.obj())
             .pipe(plumber())
             .pipe(es.writeArray(function (err, array) {
                 array.should.eql(this.expected);
